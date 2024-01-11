@@ -1,5 +1,16 @@
 import type { Database } from '@/database'
 
 export default (db: Database) => ({
-  findAll: async () => {},
+  findAll: async () =>
+    db
+      .selectFrom('screening')
+      .innerJoin('movies', 'movies.id', 'screening.movieId')
+      .select([
+        'screening.id',
+        'screening.date',
+        'screening.ticketsTotal',
+        'movies.title',
+        'movies.year',
+      ])
+      .execute(),
 })
