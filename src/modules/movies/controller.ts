@@ -2,6 +2,7 @@ import { Router } from 'express'
 import type { Database } from '@/database'
 import { jsonRoute } from '@/utils/middleware'
 import buildRespository from './repository'
+import * as schema from './schema'
 
 export default (db: Database) => {
   const messages = buildRespository(db)
@@ -10,14 +11,14 @@ export default (db: Database) => {
   router.get(
     '/',
     jsonRoute(async (req) => {
-      const { id } = req.query
+      const ids = req.query.id
 
-      if (typeof id !== 'string') {
+      if (typeof ids !== 'string') {
         const movies = await messages.findAll()
         return movies
       }
 
-      const idArr = id?.split(',').map(Number)
+      const idArr = ids?.split(',').map((id) => schema.parseId(id))
 
       const movies = await messages.findByIds(idArr)
 
