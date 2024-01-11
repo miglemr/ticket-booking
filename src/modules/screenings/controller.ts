@@ -16,5 +16,16 @@ export default (db: Database) => {
     })
   )
 
+  router.get(
+    '/:movieId',
+    jsonRoute(async (req) => {
+      const movieId = parseInt(req.params.movieId, 10)
+
+      const screenings = await messages.findById(movieId)
+
+      return screenings
+    })
+  )
+
   return router
 }
