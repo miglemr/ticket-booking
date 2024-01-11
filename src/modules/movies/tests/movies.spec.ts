@@ -39,4 +39,23 @@ describe('GET', () => {
       },
     ])
   })
+
+  it('should return one movie if only one query param was specified', async () => {
+    const { body } = await supertest(app).get('/movies?id=133093').expect(200)
+
+    expect(body).toHaveLength(1)
+    expect(body).toEqual([
+      {
+        id: 133093,
+        title: 'The Matrix',
+        year: 1999,
+      },
+    ])
+  })
+
+  it('should return ten movies if no query params are specified', async () => {
+    const { body } = await supertest(app).get('/movies').expect(200)
+
+    expect(body).toHaveLength(10)
+  })
 })
