@@ -13,4 +13,5 @@ export default (db: Database) => ({
         'movies.year',
       ])
       .execute(),
+  findById: async (movieId: number) => {},
 })

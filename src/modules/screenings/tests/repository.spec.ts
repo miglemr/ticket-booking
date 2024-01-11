@@ -68,3 +68,26 @@ describe('findAll', async () => {
     ])
   })
 })
+
+describe('findById', () => {
+  it('should return all screenings for provided movie id', async () => {
+    const screenings = await repository.findById(23)
+
+    expect(screenings).toEqual([
+      {
+        id: expect.any(Number),
+        date: '2024-01-20 10:00:00',
+        ticketsTotal: 20,
+        title: 'The Dark Knight',
+        year: 2008,
+      },
+      {
+        id: expect.any(Number),
+        date: '2024-01-22 15:00:00',
+        ticketsTotal: 30,
+        title: 'The Dark Knight',
+        year: 2008,
+      },
+    ])
+  })
+})
