@@ -69,9 +69,9 @@ describe('findAll', async () => {
   })
 })
 
-describe('findById', () => {
+describe('findById', async () => {
   it('should return all screenings for provided movie id', async () => {
-    const screenings = await repository.findById(23)
+    const screenings = await repository.findById(22)
 
     expect(screenings).toEqual([
       {
