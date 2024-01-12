@@ -70,3 +70,23 @@ describe('findById', async () => {
     expect(screenings).toEqual([])
   })
 })
+
+describe('createScreening', () => {
+  it('should create a new screening', async () => {
+    await repository.createScreening({
+      date: '2024-01-25 14:30:00',
+      ticketsTotal: 20,
+      movieId: 234,
+    })
+
+    const screenings = await repository.findAll()
+
+    expect(screenings).toContain({
+      id: expect.any(Number),
+      date: '2024-01-25 14:30:00',
+      ticketsTotal: 20,
+      title: 'Sherlock Holmes',
+      year: 2009,
+    })
+  })
+})

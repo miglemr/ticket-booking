@@ -1,6 +1,11 @@
-import type { Database } from '@/database'
+import { Insertable } from 'kysely'
+import type { Database, Screening } from '@/database'
 
 const TABLE = 'screening'
+
+type Row = Screening
+type RowWithoutId = Omit<Row, 'id'>
+type RowInsert = Insertable<RowWithoutId>
 
 export default (db: Database) => ({
   findAll: async () =>
@@ -28,4 +33,5 @@ export default (db: Database) => ({
       ])
       .where('movieId', '=', movieId)
       .execute(),
+  createScreening: async (record: RowInsert) => record,
 })

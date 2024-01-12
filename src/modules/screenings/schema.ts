@@ -7,4 +7,9 @@ const schema = z.object({
   movieId: z.number().int().positive(),
 })
 
+const insertable = schema.omit({
+  id: true,
+})
+
 export const parseId = (id: unknown) => schema.shape.id.parse(id)
+export const parseInsertable = (record: unknown) => insertable.parse(record)
