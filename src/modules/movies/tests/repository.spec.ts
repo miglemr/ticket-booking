@@ -1,6 +1,7 @@
 import createTestDatabase from '@tests/utils/createTestDatabase'
 import { createFor } from '@tests/utils/records'
 import buildRepository from '../repository'
+import * as fixtures from './fixtures'
 
 const db = await createTestDatabase()
 const repository = buildRepository(db)
@@ -10,13 +11,7 @@ describe('findAll', () => {
   it('should return existing movies', async () => {
     // ARRANGE (Given that we have the following record in the database...)
     // directly create movies in the database
-    await createMovies([
-      {
-        id: 1,
-        title: 'Sherlock Holmes',
-        year: 2009,
-      },
-    ])
+    await createMovies(fixtures.movies)
 
     // ACT (When we call...)
     const movies = await repository.findAll()
@@ -25,8 +20,18 @@ describe('findAll', () => {
     expect(movies).toEqual([
       {
         id: expect.any(Number),
+        title: 'The Dark Knight',
+        year: 2008,
+      },
+      {
+        id: expect.any(Number),
         title: 'Sherlock Holmes',
         year: 2009,
+      },
+      {
+        id: expect.any(Number),
+        title: 'Inception',
+        year: 2010,
       },
     ])
   })
@@ -34,26 +39,6 @@ describe('findAll', () => {
 
 describe('findByIds', () => {
   it('should return a list of movies by their ID', async () => {
-    // ARRANGE (Given that we have the following records in the database...)
-    // directly create movies in the database
-    await createMovies([
-      {
-        id: 22,
-        title: 'The Dark Knight',
-        year: 2008,
-      },
-      {
-        id: 234,
-        title: 'Sherlock Holmes',
-        year: 2009,
-      },
-      {
-        id: 4153,
-        title: 'Inception',
-        year: 2010,
-      },
-    ])
-
     // ACT (When we call...)
     // select a few of them
     const movies = await repository.findByIds([234, 4153])
