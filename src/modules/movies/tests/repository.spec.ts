@@ -30,7 +30,9 @@ describe('findAll', () => {
       },
     ])
   })
+})
 
+describe('findByIds', () => {
   it('should return a list of movies by their ID', async () => {
     // ARRANGE (Given that we have the following records in the database...)
     // directly create movies in the database
@@ -71,5 +73,12 @@ describe('findAll', () => {
         year: 2010,
       },
     ])
+  })
+
+  it('should return an empty list if there are no matching IDs', async () => {
+    const movies = await repository.findByIds([55, 32])
+
+    expect(movies).toHaveLength(0)
+    expect(movies).toEqual([])
   })
 })
