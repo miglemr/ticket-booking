@@ -81,7 +81,7 @@ describe('createScreening', () => {
 
     const screenings = await repository.findAll()
 
-    expect(screenings).toContain({
+    expect(screenings).toContainEqual({
       id: expect.any(Number),
       date: '2024-01-25 14:30:00',
       ticketsTotal: 20,
