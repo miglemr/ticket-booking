@@ -63,4 +63,10 @@ describe('findById', async () => {
       },
     ])
   })
+
+  it('should return an empty list if there are no screenings for a movie', async () => {
+    const screenings = await repository.findById(56)
+
+    expect(screenings).toEqual([])
+  })
 })

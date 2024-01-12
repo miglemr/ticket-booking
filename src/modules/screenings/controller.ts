@@ -2,6 +2,7 @@ import { Router } from 'express'
 import type { Database } from '@/database'
 import { jsonRoute } from '@/utils/middleware'
 import buildRepository from './repository'
+import * as schema from './schema'
 
 export default (db: Database) => {
   const messages = buildRepository(db)
@@ -19,7 +20,7 @@ export default (db: Database) => {
   router.get(
     '/:movieId',
     jsonRoute(async (req) => {
-      const movieId = parseInt(req.params.movieId, 10)
+      const movieId = schema.parseId(req.params.movieId)
 
       const screenings = await messages.findById(movieId)
 

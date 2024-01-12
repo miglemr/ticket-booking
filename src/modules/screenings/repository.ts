@@ -1,9 +1,11 @@
 import type { Database } from '@/database'
 
+const TABLE = 'screening'
+
 export default (db: Database) => ({
   findAll: async () =>
     db
-      .selectFrom('screening')
+      .selectFrom(TABLE)
       .innerJoin('movies', 'movies.id', 'screening.movieId')
       .select([
         'screening.id',
@@ -15,7 +17,7 @@ export default (db: Database) => ({
       .execute(),
   findById: async (movieId: number) =>
     db
-      .selectFrom('screening')
+      .selectFrom(TABLE)
       .innerJoin('movies', 'movies.id', 'screening.movieId')
       .select([
         'screening.id',
