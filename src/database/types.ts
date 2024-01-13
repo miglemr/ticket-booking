@@ -29,7 +29,7 @@ export interface Ratings {
 
 export interface Screening {
   id: Generated<number>;
-  date: string;
+  timestamp: string;
   ticketsTotal: number;
   movieId: number;
 }
