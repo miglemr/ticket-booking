@@ -19,21 +19,21 @@ describe('findAll', async () => {
     expect(screenings).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20T10:00:00Z',
+        timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-22T15:00:00Z',
+        timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-21T22:00:00Z',
+        timestamp: '2024-01-21T22:00:00Z',
         ticketsTotal: 20,
         title: 'Sherlock Holmes',
         year: 2009,
@@ -49,14 +49,14 @@ describe('findById', async () => {
     expect(screenings).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20T10:00:00Z',
+        timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-22T15:00:00Z',
+        timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
         title: 'The Dark Knight',
         year: 2008,
@@ -74,7 +74,7 @@ describe('findById', async () => {
 describe('createScreening', () => {
   it('should create a new screening', async () => {
     await repository.createScreening({
-      date: '2024-01-25T14:30:00Z',
+      timestamp: '2024-01-25T14:30:00Z',
       ticketsTotal: 20,
       movieId: 234,
     })
@@ -83,7 +83,7 @@ describe('createScreening', () => {
 
     expect(screenings).toContainEqual({
       id: expect.any(Number),
-      date: '2024-01-25T14:30:00Z',
+      timestamp: '2024-01-25T14:30:00Z',
       ticketsTotal: 20,
       title: 'Sherlock Holmes',
       year: 2009,

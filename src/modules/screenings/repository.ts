@@ -14,7 +14,7 @@ export default (db: Database) => ({
       .innerJoin('movies', 'movies.id', 'screening.movieId')
       .select([
         'screening.id',
-        'screening.date',
+        'screening.timestamp',
         'screening.ticketsTotal',
         'movies.title',
         'movies.year',
@@ -26,7 +26,7 @@ export default (db: Database) => ({
       .innerJoin('movies', 'movies.id', 'screening.movieId')
       .select([
         'screening.id',
-        'screening.date',
+        'screening.timestamp',
         'screening.ticketsTotal',
         'movies.title',
         'movies.year',

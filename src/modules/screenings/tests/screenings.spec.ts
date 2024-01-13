@@ -21,21 +21,21 @@ describe('GET', async () => {
     expect(body).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20T10:00:00Z',
+        timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-22T15:00:00Z',
+        timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-21T22:00:00Z',
+        timestamp: '2024-01-21T22:00:00Z',
         ticketsTotal: 20,
         title: 'Sherlock Holmes',
         year: 2009,
@@ -50,14 +50,14 @@ describe('GET', async () => {
     expect(body).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20T10:00:00Z',
+        timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-22T15:00:00Z',
+        timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
         title: 'The Dark Knight',
         year: 2008,
@@ -71,7 +71,7 @@ describe('POST', () => {
     await supertest(app)
       .post('/screenings')
       .send({
-        date: '2024-01-25T14:30:00Z',
+        timestamp: '2024-01-25T14:30:00Z',
         ticketsTotal: 20,
         movieId: 22,
       })
