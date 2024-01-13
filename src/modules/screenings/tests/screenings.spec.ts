@@ -1,14 +1,19 @@
 import supertest from 'supertest'
-import createDatabase from '@/database'
+import createTestDatabase from '@tests/utils/createTestDatabase'
+import { createFor } from '@tests/utils/records'
+import * as fixtures from './fixtures'
 import createApp from '@/app'
 
-const db = createDatabase(process.env.DATABASE_URL as string, {
-  readonly: true,
-})
+const db = await createTestDatabase()
+const createMovies = createFor(db, 'movies')
+const createScreenings = createFor(db, 'screening')
 
 const app = createApp(db)
 
-describe('GET', () => {
+describe('GET', async () => {
+  await createMovies(fixtures.movies)
+  await createScreenings(fixtures.screenings)
+
   it('should return all screenings with movie title and year', async () => {
     const { body } = await supertest(app).get('/screenings').expect(200)
 
@@ -16,46 +21,46 @@ describe('GET', () => {
     expect(body).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20 10:00:00',
+        date: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
-        title: 'The Matrix',
-        year: 1999,
+        title: 'The Dark Knight',
+        year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-22 22:00:00',
-        ticketsTotal: 25,
-        title: 'Home Alone',
-        year: 2016,
+        date: '2024-01-22T15:00:00Z',
+        ticketsTotal: 30,
+        title: 'The Dark Knight',
+        year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-28 21:30:00',
-        ticketsTotal: 15,
-        title: 'The Matrix',
-        year: 1999,
+        date: '2024-01-21T22:00:00Z',
+        ticketsTotal: 20,
+        title: 'Sherlock Holmes',
+        year: 2009,
       },
     ])
   })
 
   it('should return all screenings for provided movie id', async () => {
-    const { body } = await supertest(app).get('/screenings/133093').expect(200)
+    const { body } = await supertest(app).get('/screenings/22').expect(200)
 
     expect(body).toHaveLength(2)
     expect(body).toEqual([
       {
         id: expect.any(Number),
-        date: '2024-01-20 10:00:00',
+        date: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
-        title: 'The Matrix',
-        year: 1999,
+        title: 'The Dark Knight',
+        year: 2008,
       },
       {
         id: expect.any(Number),
-        date: '2024-01-28 21:30:00',
-        ticketsTotal: 15,
-        title: 'The Matrix',
-        year: 1999,
+        date: '2024-01-22T15:00:00Z',
+        ticketsTotal: 30,
+        title: 'The Dark Knight',
+        year: 2008,
       },
     ])
   })
@@ -66,15 +71,12 @@ describe('POST', () => {
     await supertest(app)
       .post('/screenings')
       .send({
-        date: '2024-01-25 14:30:00',
+        date: '2024-01-25T14:30:00Z',
         ticketsTotal: 20,
-        movieId: 234,
+        movieId: 22,
       })
       .expect(200, {
-        id: expect.any(Number),
-        date: '2024-01-25 14:30:00',
-        ticketsTotal: 20,
-        movieId: 234,
+        id: 4,
       })
   })
 })

@@ -34,5 +34,5 @@ export default (db: Database) => ({
       .where('movieId', '=', movieId)
       .execute(),
   createScreening: async (record: RowInsert) =>
-    db.insertInto(TABLE).values(record).executeTakeFirst(),
+    db.insertInto(TABLE).values(record).returning('id').executeTakeFirst(),
 })

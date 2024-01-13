@@ -30,7 +30,13 @@ export default (db: Database) => {
 
   router.post(
     '/',
-    jsonRoute(async () => {})
+    jsonRoute(async (req) => {
+      const body = schema.parseInsertable(req.body)
+
+      const screeningId = await messages.createScreening(body)
+
+      return screeningId
+    })
   )
 
   return router
