@@ -75,7 +75,7 @@ describe('POST', () => {
         ticketsTotal: 20,
         movieId: 22,
       })
-      .expect(200, {
+      .expect(201, {
         id: 4,
       })
   })

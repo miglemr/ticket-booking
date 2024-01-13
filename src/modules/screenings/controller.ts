@@ -1,4 +1,5 @@
 import { Router } from 'express'
+import { StatusCodes } from 'http-status-codes'
 import type { Database } from '@/database'
 import { jsonRoute } from '@/utils/middleware'
 import buildRepository from './repository'
@@ -33,10 +34,8 @@ export default (db: Database) => {
     jsonRoute(async (req) => {
       const body = schema.parseInsertable(req.body)
 
-      const screeningId = await messages.createScreening(body)
-
-      return screeningId
-    })
+      return messages.createScreening(body)
+    }, StatusCodes.CREATED)
   )
 
   return router
