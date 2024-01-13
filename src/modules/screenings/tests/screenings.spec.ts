@@ -60,3 +60,21 @@ describe('GET', () => {
     ])
   })
 })
+
+describe('POST', () => {
+  it('should create new screening in database', async () => {
+    await supertest(app)
+      .post('/screenings')
+      .send({
+        date: '2024-01-25 14:30:00',
+        ticketsTotal: 20,
+        movieId: 234,
+      })
+      .expect(200, {
+        id: expect.any(Number),
+        date: '2024-01-25 14:30:00',
+        ticketsTotal: 20,
+        movieId: 234,
+      })
+  })
+})

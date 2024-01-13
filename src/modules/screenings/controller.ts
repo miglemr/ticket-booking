@@ -28,5 +28,10 @@ export default (db: Database) => {
     })
   )
 
+  router.post(
+    '/',
+    jsonRoute(async () => {})
+  )
+
   return router
 }
