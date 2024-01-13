@@ -21,4 +21,23 @@ describe('createBooking', async () => {
       id: expect.any(Number),
     })
   })
+
+  it('should add the specified number of tickets', async () => {
+    const ticket = await repository.createBooking(
+      {
+        screeningId: 1,
+      },
+      2
+    )
+
+    expect(ticket).toHaveLength(2)
+    expect(ticket).toEqual([
+      {
+        id: expect.any(Number),
+      },
+      {
+        id: expect.any(Number),
+      },
+    ])
+  })
 })
