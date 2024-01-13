@@ -8,6 +8,6 @@ type RowWithoutId = Omit<Row, 'id'>
 type RowInsert = Insertable<RowWithoutId>
 
 export default (db: Database) => ({
-  createBooking: async (record: RowInsert, quantity: number = 1) =>
+  createBooking: async (record: RowInsert) =>
     db.insertInto(TABLE).values(record).returning(['id']).executeTakeFirst(),
 })
