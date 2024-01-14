@@ -67,6 +67,10 @@ describe('GET', async () => {
 })
 
 describe('POST', () => {
+  afterEach(async () => {
+    await db.deleteFrom('screening').execute()
+  })
+
   it('should create new screening in database', async () => {
     await supertest(app)
       .post('/screenings')
@@ -78,5 +82,16 @@ describe('POST', () => {
       .expect(201, {
         id: 4,
       })
+  })
+
+  it('should not create a new screening if movie ID is invalid', async () => {
+    await supertest(app)
+      .post('/screenings')
+      .send({
+        timestamp: '2024-01-27T21:30:00Z',
+        ticketsTotal: 20,
+        movieId: 9999,
+      })
+      .expect(404)
   })
 })

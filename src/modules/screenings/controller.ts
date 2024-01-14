@@ -7,8 +7,8 @@ import * as schema from './schema'
 import * as movieSchema from '../movies/schema'
 
 export default (db: Database) => {
-  const messages = buildRepository(db)
   const router = Router()
+  const messages = buildRepository(db)
 
   router.get(
     '/',
