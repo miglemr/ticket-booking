@@ -1,6 +1,7 @@
 import express from 'express'
 import movies from '@/modules/movies/controller'
 import screenings from '@/modules/screenings/controller'
+import tickets from '@/modules/tickets/controller'
 import jsonErrorHandler from './middleware/jsonErrors'
 import { type Database } from './database'
 
@@ -13,6 +14,7 @@ export default function createApp(db: Database) {
   // register your controllers here
   app.use('/movies', movies(db))
   app.use('/screenings', screenings(db))
+  app.use('/tickets', tickets(db))
 
   app.use(jsonErrorHandler)
 
