@@ -8,22 +8,22 @@ export default (db: Database) => {
   const router = Router()
   const messages = buildRepository(db)
 
-  router.post(
-    '/',
-    jsonRoute(async (req) => {
-      // const ticketIds = []
-      // const {quantity} = req.body
-      // const ticketId = await messages.createBooking(req.body)
-      // return ticketIds
-    }, StatusCodes.CREATED)
-  )
-
   router.get(
     '/',
     jsonRoute(async () => {
       const tickets = await messages.findAll()
+
       return tickets
     })
+  )
+
+  router.post(
+    '/',
+    jsonRoute(async (req) => {
+      const ticketIds = await messages.createBooking(req.body)
+
+      return ticketIds
+    }, StatusCodes.CREATED)
   )
 
   return router

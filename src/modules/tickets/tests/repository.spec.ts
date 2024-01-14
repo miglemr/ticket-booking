@@ -10,17 +10,9 @@ const createTickets = createFor(db, 'ticket')
 
 const repository = buildRepository(db)
 
-describe('createBooking', async () => {
+describe('findAll', async () => {
   await createMovies(fixtures.movies)
   await createScreenings(fixtures.screenings)
-
-  it.skip('should add a new ticket', async () => {
-    const ticket = await repository.createBooking(1)
-
-    expect(ticket).toEqual({
-      id: expect.any(Number),
-    })
-  })
 
   it('should return all tickets from database', async () => {
     await createTickets(fixtures.tickets)
@@ -38,5 +30,29 @@ describe('createBooking', async () => {
         screeningId: 2,
       },
     ])
+  })
+})
+
+describe('createBooking', async () => {
+  it('should add a new ticket', async () => {
+    const ticket = await repository.createBooking({
+      screeningId: 1,
+    })
+
+    expect(ticket).toEqual([
+      {
+        id: expect.any(Number),
+      },
+    ])
+  })
+
+  it('should add multiple tickets', async () => {
+    const tickets = await repository.createBooking([
+      { screeningId: 1 },
+      { screeningId: 1 },
+      { screeningId: 2 },
+    ])
+
+    expect(tickets).toHaveLength(3)
   })
 })
