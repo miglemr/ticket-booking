@@ -35,6 +35,10 @@ describe('GET', async () => {
 })
 
 describe('POST', async () => {
+  beforeEach(async () => {
+    await db.deleteFrom('ticket').execute()
+  })
+
   it('should add a new ticket to database', async () => {
     await supertest(app)
       .post('/tickets')
@@ -48,16 +52,31 @@ describe('POST', async () => {
       ])
   })
 
+  it('persists created ticket', async () => {
+    await supertest(app).post('/tickets').send({
+      screeningId: 1,
+    })
+
+    await supertest(app)
+      .get('/tickets')
+      .expect(200, [
+        {
+          id: 4,
+          screeningId: 1,
+        },
+      ])
+  })
+
   it('should add multiple tickets', async () => {
     await supertest(app)
       .post('/tickets')
       .send([{ screeningId: 1 }, { screeningId: 2 }])
       .expect(201, [
         {
-          id: 4,
+          id: 5,
         },
         {
-          id: 5,
+          id: 6,
         },
       ])
   })
