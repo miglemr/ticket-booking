@@ -15,13 +15,13 @@ describe('POST', async () => {
   await createScreenings(fixtures.screenings)
 
   it('should add a new ticket to database', async () => {
-    const ticket = await supertest(app)
+    await supertest(app)
       .post('/tickets')
       .send({
         screeningId: 1,
       })
       .expect(201, {
-        id: expect.any(Number),
+        id: 1,
       })
   })
 })
