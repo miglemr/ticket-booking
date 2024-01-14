@@ -5,7 +5,7 @@ const TABLE = 'screening'
 
 type Row = Screening
 type RowWithoutId = Omit<Row, 'id'>
-type RowInsert = Insertable<RowWithoutId>
+type RowInsert = Insertable<Omit<RowWithoutId, 'ticketsLeft'>>
 
 export default (db: Database) => ({
   findAll: async () =>
@@ -16,6 +16,7 @@ export default (db: Database) => ({
         'screening.id',
         'screening.timestamp',
         'screening.ticketsTotal',
+        'screening.ticketsLeft',
         'movies.title',
         'movies.year',
       ])
@@ -28,11 +29,16 @@ export default (db: Database) => ({
         'screening.id',
         'screening.timestamp',
         'screening.ticketsTotal',
+        'screening.ticketsLeft',
         'movies.title',
         'movies.year',
       ])
       .where('movieId', '=', movieId)
       .execute(),
   createScreening: async (record: RowInsert) =>
-    db.insertInto(TABLE).values(record).returning('id').executeTakeFirst(),
+    db
+      .insertInto(TABLE)
+      .values({ ...record, ticketsLeft: record.ticketsTotal })
+      .returning('id')
+      .executeTakeFirst(),
 })

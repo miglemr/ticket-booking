@@ -32,6 +32,7 @@ export interface Screening {
   timestamp: string;
   ticketsTotal: number;
   movieId: number;
+  ticketsLeft: number;
 }
 
 export interface Stars {

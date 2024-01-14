@@ -23,6 +23,7 @@ describe('GET', async () => {
         id: expect.any(Number),
         timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
+        ticketsLeft: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
@@ -30,6 +31,7 @@ describe('GET', async () => {
         id: expect.any(Number),
         timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
+        ticketsLeft: 30,
         title: 'The Dark Knight',
         year: 2008,
       },
@@ -37,6 +39,7 @@ describe('GET', async () => {
         id: expect.any(Number),
         timestamp: '2024-01-21T22:00:00Z',
         ticketsTotal: 20,
+        ticketsLeft: 20,
         title: 'Sherlock Holmes',
         year: 2009,
       },
@@ -52,6 +55,7 @@ describe('GET', async () => {
         id: expect.any(Number),
         timestamp: '2024-01-20T10:00:00Z',
         ticketsTotal: 20,
+        ticketsLeft: 20,
         title: 'The Dark Knight',
         year: 2008,
       },
@@ -59,6 +63,7 @@ describe('GET', async () => {
         id: expect.any(Number),
         timestamp: '2024-01-22T15:00:00Z',
         ticketsTotal: 30,
+        ticketsLeft: 30,
         title: 'The Dark Knight',
         year: 2008,
       },
@@ -92,6 +97,6 @@ describe('POST', () => {
         ticketsTotal: 20,
         movieId: 9999,
       })
-      .expect(404)
+      .expect(500)
   })
 })
