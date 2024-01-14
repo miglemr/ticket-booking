@@ -1,13 +1,16 @@
-import { Insertable } from 'kysely'
-import { Database, Ticket } from '@/database'
+import { Database } from '@/database'
 
 const TABLE = 'ticket'
 
-type Row = Ticket
-type RowWithoutId = Omit<Row, 'id'>
-type RowInsert = Insertable<RowWithoutId>
-
 export default (db: Database) => ({
-  createBooking: async (record: RowInsert) =>
-    db.insertInto(TABLE).values(record).returning(['id']).executeTakeFirst(),
+  createBooking: async (screeningId: number) =>
+    db
+      .insertInto(TABLE)
+      .values({
+        screeningId,
+      })
+      .returning(['id'])
+      .executeTakeFirst(),
+
+  findAll: async () => db.selectFrom(TABLE).selectAll().execute(),
 })

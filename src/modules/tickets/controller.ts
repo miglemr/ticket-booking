@@ -11,9 +11,19 @@ export default (db: Database) => {
   router.post(
     '/',
     jsonRoute(async (req) => {
-      const ticketId = await messages.createBooking(req.body)
-      return ticketId
+      // const ticketIds = []
+      // const {quantity} = req.body
+      // const ticketId = await messages.createBooking(req.body)
+      // return ticketIds
     }, StatusCodes.CREATED)
+  )
+
+  router.get(
+    '/',
+    jsonRoute(async () => {
+      const tickets = await messages.findAll()
+      return tickets
+    })
   )
 
   return router

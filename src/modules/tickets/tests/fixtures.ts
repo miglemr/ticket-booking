@@ -28,3 +28,5 @@ export const screenings = [
     movieId: 234,
   },
 ]
+
+export const tickets = [{ screeningId: 1 }, { screeningId: 2 }]
