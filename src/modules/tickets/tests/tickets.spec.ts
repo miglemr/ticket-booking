@@ -11,23 +11,22 @@ const createMovies = createFor(db, 'movies')
 const createScreenings = createFor(db, 'screening')
 const createTickets = createFor(db, 'ticket')
 
+await createMovies(fixtures.movies)
+await createScreenings(fixtures.screenings)
+await createTickets(fixtures.tickets)
+
 describe('GET', async () => {
-  await createMovies(fixtures.movies)
-  await createScreenings(fixtures.screenings)
-
   it('should return all tickets', async () => {
-    await createTickets(fixtures.tickets)
-
     const { body } = await supertest(app).get('/tickets').expect(200)
 
     expect(body).toHaveLength(2)
     expect(body).toEqual([
       {
-        id: 1,
+        id: expect.any(Number),
         screeningId: 1,
       },
       {
-        id: 2,
+        id: expect.any(Number),
         screeningId: 2,
       },
     ])
@@ -40,16 +39,18 @@ describe('POST', async () => {
   })
 
   it('should add a new ticket to database', async () => {
-    await supertest(app)
+    const { body } = await supertest(app)
       .post('/tickets')
       .send({
         screeningId: 1,
       })
-      .expect(201, [
-        {
-          id: 3,
-        },
-      ])
+      .expect(201)
+
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+      },
+    ])
   })
 
   it('persists created ticket', async () => {
@@ -57,27 +58,58 @@ describe('POST', async () => {
       screeningId: 1,
     })
 
-    await supertest(app)
-      .get('/tickets')
-      .expect(200, [
-        {
-          id: 4,
-          screeningId: 1,
-        },
-      ])
+    const { body } = await supertest(app).get('/tickets').expect(200)
+
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+        screeningId: 1,
+      },
+    ])
   })
 
   it('should add multiple tickets', async () => {
-    await supertest(app)
+    const { body } = await supertest(app)
       .post('/tickets')
       .send([{ screeningId: 1 }, { screeningId: 2 }])
-      .expect(201, [
-        {
-          id: 5,
-        },
-        {
-          id: 6,
-        },
-      ])
+      .expect(201)
+
+    expect(body).toEqual([
+      {
+        id: expect.any(Number),
+      },
+      {
+        id: expect.any(Number),
+      },
+    ])
+  })
+
+  it('should decrement tickets left column value by one', async () => {
+    await db.deleteFrom('screening').execute()
+    await createScreenings(fixtures.screenings)
+
+    await supertest(app)
+      .post('/tickets')
+      .send([{ screeningId: 4 }, { screeningId: 5 }])
+
+    const { body } = await supertest(app).get('/screenings').expect(200)
+
+    expect(body[0]).toEqual({
+      id: expect.any(Number),
+      timestamp: '2024-01-20T10:00:00Z',
+      ticketsTotal: 20,
+      ticketsLeft: 19,
+      title: 'The Dark Knight',
+      year: 2008,
+    })
+
+    expect(body[1]).toEqual({
+      id: expect.any(Number),
+      timestamp: '2024-01-22T15:00:00Z',
+      ticketsTotal: 30,
+      ticketsLeft: 29,
+      title: 'The Dark Knight',
+      year: 2008,
+    })
   })
 })
