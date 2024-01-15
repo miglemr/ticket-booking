@@ -8,10 +8,10 @@ const repository = buildRepository(db)
 const createMovies = createFor(db, 'movies')
 const createScreenings = createFor(db, 'screening')
 
-describe('findAll', async () => {
-  await createMovies(fixtures.movies)
-  await createScreenings(fixtures.screenings)
+await createMovies(fixtures.movies)
+await createScreenings(fixtures.screenings)
 
+describe('findAll', async () => {
   it('should return all existing screenings with movie title and year', async () => {
     const screenings = await repository.findAll()
 

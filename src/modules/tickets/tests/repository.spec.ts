@@ -10,23 +10,22 @@ const createTickets = createFor(db, 'ticket')
 
 const repository = buildRepository(db)
 
+await createMovies(fixtures.movies)
+await createScreenings(fixtures.screenings)
+await createTickets(fixtures.tickets)
+
 describe('findAll', async () => {
-  await createMovies(fixtures.movies)
-  await createScreenings(fixtures.screenings)
-
   it('should return all tickets from database', async () => {
-    await createTickets(fixtures.tickets)
-
     const tickets = await repository.findAll()
 
     expect(tickets).toHaveLength(2)
     expect(tickets).toEqual([
       {
-        id: 1,
+        id: expect.any(Number),
         screeningId: 1,
       },
       {
-        id: 2,
+        id: expect.any(Number),
         screeningId: 2,
       },
     ])

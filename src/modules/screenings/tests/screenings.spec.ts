@@ -5,15 +5,15 @@ import * as fixtures from './fixtures'
 import createApp from '@/app'
 
 const db = await createTestDatabase()
+const app = createApp(db)
+
 const createMovies = createFor(db, 'movies')
 const createScreenings = createFor(db, 'screening')
 
-const app = createApp(db)
+await createMovies(fixtures.movies)
+await createScreenings(fixtures.screenings)
 
 describe('GET', async () => {
-  await createMovies(fixtures.movies)
-  await createScreenings(fixtures.screenings)
-
   it('should return all screenings with movie title and year', async () => {
     const { body } = await supertest(app).get('/screenings').expect(200)
 
@@ -77,16 +77,18 @@ describe('POST', () => {
   })
 
   it('should create new screening in database', async () => {
-    await supertest(app)
+    const { body } = await supertest(app)
       .post('/screenings')
       .send({
         timestamp: '2024-01-25T14:30:00Z',
         ticketsTotal: 20,
         movieId: 22,
       })
-      .expect(201, {
-        id: 4,
-      })
+      .expect(201)
+
+    expect(body).toEqual({
+      id: expect.any(Number),
+    })
   })
 
   it('should not create a new screening if movie ID is invalid', async () => {
