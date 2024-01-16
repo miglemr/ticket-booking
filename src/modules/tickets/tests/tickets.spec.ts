@@ -112,4 +112,15 @@ describe('POST', async () => {
       year: 2008,
     })
   })
+
+  it('should throw an error if there are no tickets left', async () => {
+    await supertest(app).post('/screenings').send({
+      timestamp: '2024-01-30T21:00:00Z',
+      ticketsTotal: 1,
+      movieId: 22,
+    })
+
+    await supertest(app).post('/tickets').send({ screeningId: 7 })
+    await supertest(app).post('/tickets').send({ screeningId: 7 }).expect(400)
+  })
 })

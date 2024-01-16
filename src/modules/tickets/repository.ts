@@ -1,5 +1,6 @@
 import { Insertable } from 'kysely'
 import { Database, Ticket } from '@/database'
+import BadRequest from '@/utils/errors/BadRequest'
 
 const TABLE = 'ticket'
 
@@ -15,21 +16,27 @@ export default (db: Database) => ({
           (screeningIdObj) => screeningIdObj.screeningId
         )
 
-        await trx
+        const { numUpdatedRows } = await trx
           .updateTable('screening')
           .set((eb) => ({
             ticketsLeft: eb('ticketsLeft', '-', 1),
           }))
           .where('id', 'in', screeningIdArr)
-          .executeTakeFirst()
+          .where('ticketsLeft', '>', 0)
+          .executeTakeFirstOrThrow()
+
+        if (!numUpdatedRows) throw new BadRequest('error')
       } else {
-        await trx
+        const { numUpdatedRows } = await trx
           .updateTable('screening')
           .set((eb) => ({
             ticketsLeft: eb('ticketsLeft', '-', 1),
           }))
           .where('id', '=', Object.values(screeningIds))
-          .executeTakeFirst()
+          .where('ticketsLeft', '>', 0)
+          .executeTakeFirstOrThrow()
+
+        if (!numUpdatedRows) throw new BadRequest('error')
       }
 
       return trx
